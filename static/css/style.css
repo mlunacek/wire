@@ -1,0 +1,103 @@
+body 
+{
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.container
+{
+max-width: 960px;
+}
+
+.sub-container
+{
+	clear: both;
+}
+
+#date-select
+{
+float: right;
+clear: both;
+margin-bottom: 10px;
+}
+
+#date-select .btn:first-child
+{
+	width: 100px;
+}
+
+#percent-select
+{
+	width: 60px;
+	float: left;
+	margin-right: 5px
+}
+
+#page-select
+{
+	float: left;
+}
+
+#pagination-menu
+{
+	display: inline;
+}
+
+#pagination-text
+{
+line-height: 40px;
+padding-left: 10px;
+}
+
+#example_bock
+{
+ 	height: 1200px;
+	background-color: gray;
+}
+
+#summary_table
+{
+max-width: 600px;
+clear: both;
+margin-top: 10px;
+}
+
+#loading
+{           
+	background-position: 50% 50%;
+	height: 20px;
+	width: 200px;
+	float: right;
+	padding-top: 10px;
+	padding-bottom: 10px;
+    background-image: url(../images/ajax-wait-bar.gif);
+    background-repeat: no-repeat;
+}
+.slidingDiv
+{
+	margin-top: 10px;
+}
+
+.non-sliding-div
+{
+	margin-top: 10px;
+}
+
+@media (max-width: 480px) { 
+
+.iphonebtn
+{
+	width: 250px;
+}
+
+#date-select
+{
+	float: left;
+	clear: both;
+	width: 230px;
+}
+
+
+
+}
+

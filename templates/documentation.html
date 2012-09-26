@@ -1,0 +1,116 @@
+
+{% extends "base.html" %}
+
+{% block title %}Documentation{% endblock %}
+
+{% block content %}
+
+<h3> Set up</h3>
+
+<ol>
+<li> View existing reservations
+<pre>
+showres	
+</pre>			
+<li> Clear existing benchmark reservations:	
+<pre>
+mrsvctl -r benchmark-*	
+</pre>	
+This should include two reservations:
+<pre>
+benchmark-node*	
+</pre>	
+<pre>
+benchmark-not-tested*	
+</pre>	
+<li> Add janus-admin to existing reservations:
+<pre>
+mrsvctl -m -a CLASS==janus-admin PM-*
+</pre>		
+</ol>
+
+<h3> Running the tests </h3>
+
+<ol>
+<li> Navigate to the benchmarks directory
+<pre>
+cd /curc/admin/benchmarks/data	
+</pre>	
+<li> Load the benchmarks dotkit
+<pre>
+use Benchmarks	
+</pre>		
+	
+<li> Create a data directory 
+<pre>
+mkdir mmm-dd-yyyy 
+cd mmm-dd-yyyy
+</pre>	
+
+<li> <b>Node List</b>
+<p> Everything starts with a set of nodes.  Create a text
+file that lists the nodes you would like to test. 
+To create a list with all available nodes, run the command:</p>
+<pre>
+create_node_list.py > node_list	
+</pre>	
+<p>To create a list with a subset of available nodes, run the command:</p>
+<pre>
+create_node_list.py -x nodes01[01-66] > node_list	
+</pre>	
+<p>For help, type:</p>
+<pre>
+create_node_list.py -h
+</pre>	
+<p> Alternatively, you can use the pbsnodes command:</p>
+<pre>
+pbsnodes  -l free | cut -f1 -d' ' > node_list
+</pre>	
+
+
+<li> <b>Create and Submit the Jobs</b>
+<p> Create all the jobs using the following command: </p>
+<pre>
+create_jobs.py -l node_list 	
+</pre>	
+<p> Submit the individual jobs: </p>
+<ol>
+<li><pre>submit_jobs.py -d nodes</pre>
+<li><pre>submit_jobs.py -d bandwidth</pre>	
+<li><pre>submit_jobs.py -d hpl.5</pre>	
+<li><pre>submit_jobs.py -d hpl.10</pre>
+<li><pre>submit_jobs.py -d hpl.20</pre>					
+</ol>		
+</ol>
+
+<h3> Discover bad nodes</h3>
+<ol>
+<li> <b> Import data </b>
+<p> Once the jobs have finished, you can import the data to the database.</p>
+<ol>
+<li><pre>import_nodes.py -p <mmm-dd-yyyy>/nodes </pre>
+<li><pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth </pre>
+<p> This only allows one import per day unless you specify a trial.  For example,
+	if you had two more bandwidth tests, you could import them using the -t option:</p>	
+<pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth.1 -t 1</pre>	
+<pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth.2 -t 2</pre>	
+<p> You can also specify a date with the -d option.
+<pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth -d 2012-09-29</pre>	
+<p> For help, please type:</p>
+<pre>import_bandwidth.py -h</pre>					
+</ol>	
+		
+<li> <b> Delete data </b>
+	<p> If you want to remove a trial from the database, you can do this by specifying
+		the date and trial you wish to remove.</p>
+<pre>delete_trial.py -d 2012-09-19 -t 0</pre>			
+
+<li> <b> Pick out the bad nodes </b>
+	<p> Use the web interface to identify the bad nodes. The summary page gives you commands to 
+		reserve all bad nodes and nodes that were not tested. </p>
+
+</ol>
+
+
+{% endblock %}
+

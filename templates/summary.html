@@ -1,0 +1,126 @@
+
+{% extends "base.html" %}
+
+{% block js%}
+<script type="text/javascript">
+$(document).ready(function(){
+ 
+        $(".slidingDiv").hide();
+        $(".show_hide").show();
+		$("#summary_table").show();
+		$("#summary_button").button('toggle')
+ 
+    $('.show_hide').click(function(){
+	   $(this).nextAll('.slidingDiv').first().slideToggle("fast");
+    });
+ 
+});
+</script>
+{% endblock%}
+
+{% block title %}Summary{% endblock %}
+
+{% block current_date %} {{current_date.p}} {% endblock %}
+
+{% block content %}
+
+
+<div id="date-select">
+	<select ONCHANGE="location = this.options[this.selectedIndex].value;">
+	<option value="/benchmarks/{{current_date.u}}">{{current_date.p}}</option>	
+	 {% for x in date_list %}	
+	  <option value="/benchmarks/{{x.u}}">{{x.p}}</option>
+	  {% endfor %}
+	</select>	
+</div>	
+
+
+<div class="sub-container">
+
+
+
+{% if summary %}
+<h3> Summary </h3>
+<a href="#" id="summary_button" class="btn show_hide iphonebtn" data-toggle="button">Show/hide</a>
+<div  id="summary_table" class="slidingDiv">
+<table class="table table-condensed table-striped">
+<thead>
+	<tr>
+		<th>Node</th>
+		<th>Stream</th>
+		<th>Linpack</th>
+		<th>Bandwidth</th>
+	</tr>
+</thead>
+	<tbody>
+	{% for x in summary %}	
+	<tr>
+		<td>{{x.node}}</td>
+		{% if x.stream %}
+		<td><i class="icon-remove"></i></td>
+		{% else %}
+		<td></td>
+		{% endif %}
+		{% if x.linpack %}
+		<td><i class="icon-remove"></i></td>
+		{% else %}
+		<td></td>
+		{% endif %}
+		
+		{% if x.bandwidth %}
+		<td><i class="icon-remove"></i></td>
+		{% else %}
+		<td></td>
+		{% endif %}	
+	</tr>	
+	{% endfor %}	
+	</tbody>
+</table>
+</div>
+{% else %}
+<div>
+<table class="table table-condensed table-striped" id="summary_table">
+    <p>No summary available.</p>
+</table>
+</div>
+{% endif %}	
+
+{% if summary %}
+{% if reservation %}
+<h3> Reservation </h3>
+<a href="#" class="btn show_hide iphonebtn" data-toggle="button">Show/hide</a>
+<div class="slidingDiv" id="summary_reservation">
+	<pre>
+		{{reservation}}
+	</pre>	
+</div>	
+<div class="non-sliding-div">
+<pre>
+mrsvctl -c -h $NODE_LIST -n 'benchmark-node'	
+</pre>
+</div>	
+{% endif %}
+
+
+{% if not_tested %}
+<h3> Nodes not tested </h3>
+<a href="#" class="btn show_hide iphonebtn" data-toggle="button">Show/hide</a>
+<div id="summary_reservation" class="slidingDiv">
+	<pre>
+		{{not_tested}}
+	</pre>	
+</div>
+<div>
+<pre class="non-sliding-div">
+mrsvctl -c -h $NODE_LIST -n 'benchmark-not-tested'	
+</pre>
+</div>	
+{% endif %}
+{% endif %}	
+
+
+
+{% endblock %}
+
+
+

@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block js%}
+<script type="text/javascript" charset="utf-8">
+	(function ($) {
+		$.extend({ 
+	    	highlight: function (x) {
+				$("tr td:nth-child(10n)").each(function(){
+					var tv = parseInt($(this).text());
+		       		if ( tv >= x ){
+		               $(this).parent().addClass("warning");
+					   $(this).parent().find('input:checkbox:first').attr('checked', true);
+		           	}
+		           	else{
+		           		$(this).parent().removeClass("warning");
+						$(this).parent().find('input:checkbox:first').attr('checked', false);
+		           	}
+	       		});   
+	    	}
+		});
+		$.extend({ 
+	    	highlight_checked: function () {
+				$("tr").each(function(){
+					var tc = $(this).find('input:checkbox:first').is(':checked')
+		       		if ( tc==true ){
+		               $(this).addClass("warning");
+		           	}
+		           	else{
+		           		$(this).removeClass("warning");
+		           	}
+	       		});   
+	    	}
+		});
+	})(jQuery);
+		
+	$(document).ready(function() {
+				
+		$('#form').submit( function() {
+		    var sData = $('#form :input').serialize();
+			$.post("/benchmarks/{{name}}/{{current_date.u}}",sData);			
+			return false;
+		} );
+		
+		 $('#example').change(function() {
+		 	$.highlight_checked();  
+		 });
+		 
+		 $("#loading").hide();
+			           
+    } );
+	
+	$(document).ajaxStop(function(){
+	  $('#form').fadeTo("slow",1.0);
+	  $("#loading").fadeOut("slow");
+	});
+
+	$(document).ajaxStart(function(){
+	   $('#form').fadeTo("slow",0.25);
+	   $('#loading').fadeIn("slow");
+	 });
+	
+</script>
+{% endblock%}
+
+{% block title %}{{cap_name}}{% endblock %}
+
+{% block content %}
+
+<h3> {{cap_name}} <div id="loading"></div>	</h3>
+	
+<form id="form">
+	
+	<div id="date-select">
+		<select ONCHANGE="location = this.options[this.selectedIndex].value;">
+		<option>{{current_date.p}}</option>	
+		 {% for x in date_list %}	
+		  <option value="/benchmarks/{{name}}/{{x.u}}">{{x.p}}</option>
+		  {% endfor %}
+		</select>	
+	</div>	
+	
+	<!--
+	<div class="btn-group" id="date-select">
+	  <a class="btn" href="#">{{current_date.p}}</a>
+	  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
+	  <ul class="dropdown-menu">
+	      {% for x in date_list %}	
+	       <li><a href="/benchmarks/{{name}}/{{x.u}}">{{x.p}}</a></li>
+	      {% endfor %}	
+	   	<li class="divider"></li>
+	   	<li><a href="#">more</a></li>
+	  </ul>
+	</div>
+	-->
+
+{% if object_list %}
+<!--
+	<select id="percent-select">
+	  <option>5</option>
+	  <option>6</option>
+	  <option>7</option>
+	  <option>8</option>
+	  <option>9</option>
+	  <option>10</option>
+	  <option>15</option>
+	  <option>20</option>
+	  <option>25</option>
+	  <option>30</option>
+	  <option>40</option>
+	  <option>50</option>
+	  <option>75</option>
+	  <option>100</option>
+	</select>
+-->	
+	
+	<button class="btn btn-primary iphonebtn" type="submit" >submit page</button>    
+		
+	<div class="pagination">
+	  <ul id="pagination-menu">
+		<li><a href="?page={{1}}">First</a></li>
+	    <li><a href="?page={{ object_list.previous_page_number }}"><</a></li>
+	    <li><a href="?page={{ object_list.next_page_number }}">></a></li>
+		<li><a href="?page={{object_list.paginator.num_pages}}">Last</a></li>
+	  </ul>
+	  <span id="pagination-text">Page {{ object_list.number }} of {{ object_list.paginator.num_pages }}</span>
+	</div>
+	
+<table class="table table-condensed table-striped" id="example">
+<thead>
+	<tr>
+		<th>Node Name</th>
+		<th class="hidden-phone">t1</th>
+		<th class="hidden-phone"></th>
+		<th class="hidden-phone">t2</th>
+		<th class="hidden-phone"></th>
+		<th class="hidden-phone">t3</th>
+		<th class="hidden-phone"></th>
+		<th class="hidden-phone">t4</th>
+		<th class="hidden-phone"></th>
+		<th>Percent</th>
+		<th>Check</th>
+	</tr>
+</thead>
+<tbody>
+
+{% csrf_token %}
+{% for x in object_list %}
+	{% if x.effective %}
+	<tr>
+	{% else %}
+	<tr class="warning">
+	{% endif %}
+		<td>{{ x.name }}</td>
+		<td class="hidden-phone">{{ x.test1 }} </td>
+		<td class="hidden-phone">({{ x.p_test1 }})</td>
+		<td class="hidden-phone">{{ x.test2 }}</td>
+		<td class="hidden-phone">({{ x.p_test2 }})</td>
+		<td class="hidden-phone">{{ x.test3 }}</td>
+		<td class="hidden-phone">({{ x.p_test3 }}) </td>
+		<td class="hidden-phone">{{ x.test4 }}</td>
+		<td class="hidden-phone">({{ x.p_test4 }})</td>
+		<td>{{ x.p_index }}</td>
+		{% if x.effective %}
+		<td class="center"><input type="checkbox" value="{{ x.id }}" name="effective" ></td>
+		{% else %}
+		<td class="center"><input type="checkbox" value="{{ x.id }}" name="effective" checked="yes"></td>
+		{% endif %}
+	</tr>	
+{% endfor %}		
+	</tbody>
+</table>
+
+{% else %}
+    <p>No summary available.</p>
+{% endif %}	
+
+</form>
+</div>
+
+
+
+
+
+{% endblock %}
+
+
+
+
+
