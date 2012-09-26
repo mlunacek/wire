@@ -88,14 +88,14 @@ create_jobs.py -l node_list
 <li> <b> Import data </b>
 <p> Once the jobs have finished, you can import the data to the database.</p>
 <ol>
-<li><pre>import_nodes.py -p <mmm-dd-yyyy>/nodes </pre>
-<li><pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth </pre>
+<li><pre>import_nodes.py -p nodes/ </pre>
+<li><pre>import_bandwidth.py -p bandwidth/ </pre>
 <p> This only allows one import per day unless you specify a trial.  For example,
 	if you had two more bandwidth tests, you could import them using the -t option:</p>	
-<pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth.1 -t 1</pre>	
-<pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth.2 -t 2</pre>	
+<pre>import_bandwidth.py -p bandwidth.1 -t 1</pre>	
+<pre>import_bandwidth.py -p bandwidth.2 -t 2</pre>	
 <p> You can also specify a date with the -d option.
-<pre>import_bandwidth.py -p <mmm-dd-yyyy>/bandwidth -d 2012-09-29</pre>	
+<pre>import_bandwidth.py -p bandwidth -d 2012-09-29</pre>	
 <p> For help, please type:</p>
 <pre>import_bandwidth.py -h</pre>					
 </ol>	
