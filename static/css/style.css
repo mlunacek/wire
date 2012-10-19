@@ -55,6 +55,20 @@ padding-left: 10px;
 	background-color: gray;
 }
 
+#node_summary_table
+{
+max-width: 800px;
+clear: both;
+margin-top: 10px;
+}
+
+#node_detail_table
+{
+max-width: 400px;
+clear: both;
+margin-top: 10px;
+}
+
 #summary_table
 {
 max-width: 600px;
@@ -84,7 +98,6 @@ margin-top: 10px;
 }
 
 @media (max-width: 480px) { 
-
 .iphonebtn
 {
 	width: 250px;
