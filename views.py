@@ -1,7 +1,8 @@
 # Create your views here.
 import time
 from django.db import connection, reset_queries
-from django.shortcuts import render_to_response, get_object_or_404, render
+from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render_to_response, HttpResponseRedirect
 from django.template import Context, loader, RequestContext
 from django.views.generic import TemplateView
 from django.views.generic import ListView
@@ -10,34 +11,35 @@ from django.db.models import Avg,Max,Min
 import functions
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+
 from wire.models import Stream, Linpack, Bandwidth
 from wire import models as WireModels
+from wire import forms
 
 
-
-
-def documentation(request):
-    data ={}
-    data["current_date"] = functions.get_current_date(request)
-    data["date_list"]= functions.date_list()
-    return render(request,'documentation.html', data, context_instance=RequestContext(request))
-
-def summary(request):
-    data ={}
-    data["current_date"] = functions.get_current_date(request)
-    data["date_list"]= functions.date_list()
-    functions.get_summary(data)
-
-    return render(request,'summary.html', data, context_instance=RequestContext(request))
-
+@login_required(login_url='/benchmarks/login/')
+def summary_redirect(request):
+    d = functions.get_current_date(request)
+    page = '/benchmarks/summary/' + d.u
+    return HttpResponseRedirect(page)
+    
+@login_required(login_url='/benchmarks/login/')
 def summary_detail(request, year, month, day, trial):
     data ={}
     data["current_date"]= functions.create_current_date(year,month,day,trial)
     data["date_list"]= functions.date_list()
-    functions.get_summary(data)
-    
+    functions.get_summary(data)   
     return render(request,'summary.html',data, context_instance=RequestContext(request))
 
+@login_required(login_url='/benchmarks/login/')
+def obj_view_redirect(request,obj_type=None):
+    d = functions.get_current_date(request)
+    page = '/benchmarks/' + obj_type + '/' + d.u
+    return HttpResponseRedirect(page)
+
+@login_required(login_url='/benchmarks/login/')
 def obj_view(request,obj_type,year,month,day,trial):
     start_time = time.time()
     reset_queries()

@@ -1,5 +1,19 @@
+from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render_to_response, HttpResponseRedirect
+from django.template import Context, loader, RequestContext
+
 from wire.models import Stream, Linpack, Bandwidth, Summary, Nodes
 from datetime import datetime, date
+
+def static_render(request, template):
+    data ={}
+    data["current_date"] = get_current_date(request)
+    data["date_list"]= date_list()
+    return render(request,template, data, context_instance=RequestContext(request))
+
+
+
+
 
 class Trial:
     def __init__(self, d):
