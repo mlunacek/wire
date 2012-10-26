@@ -4,10 +4,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link type="text/css" href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link type="text/css" href="{{ STATIC_URL }}css/style.css" rel="stylesheet" />	
-    <link type="text/css" href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 	<link type="text/css" href="{{ STATIC_URL }}bootstrap/css/datepicker.css" rel="stylesheet">
 	<link type="text/css" href="{{ STATIC_URL }}bootstrap/css/timepicker.css" rel="stylesheet">
+	<link type="text/css" href="{{ STATIC_URL }}css/style.css" rel="stylesheet" />	
+	<link type="text/css" href="{{ STATIC_URL }}bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	<link type="text/css" href="{{ STATIC_URL }}css/color.css" rel="stylesheet" />	
     <script src="{{ STATIC_URL }}js/jquery.js"></script>
     <script src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
 
@@ -55,7 +56,7 @@
 	  			  	  	{% endif %}
 						<li class="divider"></li>
 						<li><a href="{% url node_query %}">Nodes</a></li>
-						
+						<li><a href="{% url job_query %}">Jobs</a></li>
 				    </ul>
 				  </li>
 				  <li><a href="{% url documentation %}">Documentation</a></li>  

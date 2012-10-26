@@ -10,13 +10,23 @@
         <div class="well sidebar-nav">
           <ul class="nav nav-list">
 			{% if user.is_authenticated %}
+			<li class="nav-header">Benchmarks</li>
             <li><a href="{% url summary %}">Summary</a></li>
  		    <li><a href="{% url obj_view_redirect obj_type='stream' %}">Stream</a></li>
 			<li><a href="{% url obj_view_redirect obj_type='linpack' %}">Linpack</a></li>
 			<li><a href="{% url obj_view_redirect obj_type='bandwidth' %}">Bandwidth</a></li>
+			<li class="nav-header">Query Tools</li>
+		    <li><a href="{% url node_query %}" >Nodes</a></li>
+			<li><a href="{% url job_query %}" >Jobs</a></li>
+			
 		    {% else %}
+			<li class="nav-header">User</li>
 		    <li><a href="{% url login %}" >Login</a></li>
 			<li><a href="{% url register %}" >Register</a></li>
+			<li class="nav-header">Query Tools</li>
+		    <li><a href="{% url node_query %}" >Nodes</a></li>
+			<li><a href="{% url job_query %}" >Jobs</a></li>
+			
 		    {% endif %}
           </ul>
         </div><!--/.well -->

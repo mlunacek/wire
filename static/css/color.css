@@ -1,0 +1,12 @@
+
+.table-striped tbody tr:nth-child(odd) td.passed,
+.table-striped tbody tr:nth-child(even) td.passed 
+{
+	background-color: #d1ffc4;
+}
+
+.table-striped tbody tr:nth-child(odd) td.failed,
+.table-striped tbody tr:nth-child(even) td.failed
+{
+	background-color: #ff3d13;
+}
