@@ -1,8 +1,9 @@
 # Create your views here.
 import time
+from django.utils import simplejson
 from django.db import connection, reset_queries
 from django.shortcuts import get_object_or_404, render
-from django.shortcuts import render_to_response, HttpResponseRedirect
+from django.shortcuts import render_to_response, HttpResponseRedirect, HttpResponse
 from django.template import Context, loader, RequestContext
 from django.views.generic import TemplateView
 from django.views.generic import ListView
@@ -17,6 +18,8 @@ from django.core.urlresolvers import reverse
 from wire.models import Stream, Linpack, Bandwidth
 from wire import models as WireModels
 from wire import forms
+
+import numpy as np
 
 
 @login_required(login_url='/benchmarks/login/')
@@ -99,8 +102,33 @@ def obj_view(request,obj_type,year,month,day,trial):
    
     return  render_to_response('obj_view.html',data, context_instance=RequestContext(request))
  
- 
+@login_required(login_url='/benchmarks/login/')
+def obj_view_data(request,obj_type,year,month,day,trial):
+    
+    data ={}
+    data["current_date"]= functions.create_current_date(year,month,day,trial)
+    clas = globals()[obj_type.title()]
+    object_list = clas.objects.filter(test_date=data["current_date"].d)
+    
+    test1 = []
+    test2 = []
+    test3 = []
+    test4 = []
+    for x in object_list:
+        test1.append(x.test1)
+        test2.append(x.test2)
+        test3.append(x.test3)
+        test4.append(x.test4)
+    print np.histogram(test1)
 
+    data = []
+    data.append(test1)
+    data.append(test2)
+    data.append(test3)
+    data.append(test4)
+    return HttpResponse(simplejson.dumps(data))
+    
+    
 
 
 

@@ -97,6 +97,52 @@ margin-top: 10px;
 	margin-top: 10px;
 }
 
+/* This is for the Node query */
+
+#id_job_id 
+{
+	width:100px;
+}
+
+#id_node_name
+{
+	width: 100px;
+}
+
+#id_date
+{
+	width: 100px;
+}
+
+#node_form .control-label
+{
+	width: 75px;
+}
+#node_form .controls
+{
+	margin-left: 100px;
+}
+
+#chart1,
+#chart2,
+#chart3,
+#chart4,
+#chart5
+{
+	width: 600px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.chart-button
+{
+    margin: 30px;
+    margin-left: 90px;
+	
+}
+
+
+
 @media (max-width: 480px) { 
 .iphonebtn
 {
@@ -110,7 +156,23 @@ margin-top: 10px;
 	width: 230px;
 }
 
-
+#chart1,
+#chart2,
+#chart3,
+#chart4,
+#chart5
+{
+	width: 250px;
+	margin-left: auto;
+	margin-right: auto;
+}
 
 }
+
+
+
+
+
+
+
 

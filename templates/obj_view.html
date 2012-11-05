@@ -1,6 +1,20 @@
 {% extends "base.html" %}
 
 {% block js%}
+
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jquery.jqplot.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jqplot.highlighter.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jqplot.cursor.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jqplot.dateAxisRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jqplot.ohlcRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jqplot.pointLabels.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jqplot.barRenderer.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}jqplot/js/jqplot.categoryAxisRenderer.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jqplot/css/jquery.jqplot.css" />
+
+
+
 <script type="text/javascript" charset="utf-8">
 	(function ($) {
 		$.extend({ 
@@ -60,6 +74,75 @@
 	 });
 	
 </script>
+
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function(){  
+ 
+    var gabe = {
+		series: [
+		 {color: 'rgb(27, 158, 119)',  markerOptions: { show: false}},
+		 {color: 'rgb(217, 95, 2)',  markerOptions: { show: false}},
+		 {color: 'rgb(117, 112, 179)',  markerOptions: { show: false}},
+		 {color: 'rgb(231, 41, 138)',  markerOptions: { show: false}},
+		        ],
+	    grid: {
+	        drawGridlines: true,
+	        gridLineColor: "#F7F7F7",
+	        gridLineWidth: 1,
+	        backgroundColor: "#E8E8E8",
+	        borderColor: "#999999",
+	        borderWidth: 2,
+	        shadow: true
+	    }
+       };	
+	  //$.jqplot.config.enablePlugins = true;
+
+	  // Our ajax data renderer which here retrieves a text file.
+	  // it could contact any source and pull data, however.
+	  // The options argument isn't used in this renderer.
+	  var ajaxDataRenderer = function(url, plot, options) {
+	    var ret = null;
+	    $.ajax({
+	      // have to use synchronous here, else the function 
+	      // will return before the data is fetched
+	      async: false,
+	      url: url,
+	      dataType:"json",
+	      success: function(data) {
+	        ret = data;
+	      }
+	    });
+	    return ret;
+	  };
+	  // The url for our json data
+	  var jsonurl = "/benchmarks/{{name}}/{{current_date.u}}data/";
+ 
+	  // passing in the url string as the jqPlot data argument is a handy
+	  // shortcut for our renderer.  You could also have used the
+	  // "dataRendererOptions" option to pass in the url.
+	  var plot01 = $.jqplot('chart1', jsonurl,{
+	    dataRenderer: ajaxDataRenderer,
+	    dataRendererOptions: {
+	      unusedOptionalUrl: jsonurl
+	    },
+  	  cursor:{ 
+  	    show: true,
+  	    zoom:true, 
+  	    showTooltip:true
+  	  },
+      xaxis: {
+		  show: false
+	  },
+	  });
+	  plot01.themeEngine.newTheme('gabe', gabe);
+	  plot01.activateTheme('gabe');
+
+	  $('.chart1-reset').click(function() { plot01.resetZoom() }) 
+	  
+});
+</script>
+
+
 {% endblock%}
 
 {% block title %}{{cap_name}}{% endblock %}
@@ -67,6 +150,9 @@
 {% block content %}
 
 <h3> {{cap_name}} <div id="loading"></div>	</h3>
+
+<div class="hidden-phone" id="chart1"></div>
+<button class="btn chart-button chart1-reset hidden-phone">Reset Zoom</button>
 	
 <form id="form">
 	
@@ -79,39 +165,10 @@
 		</select>	
 	</div>	
 	
-	<!--
-	<div class="btn-group" id="date-select">
-	  <a class="btn" href="#">{{current_date.p}}</a>
-	  <a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
-	  <ul class="dropdown-menu">
-	      {% for x in date_list %}	
-	       <li><a href="/benchmarks/{{name}}/{{x.u}}">{{x.p}}</a></li>
-	      {% endfor %}	
-	   	<li class="divider"></li>
-	   	<li><a href="#">more</a></li>
-	  </ul>
-	</div>
-	-->
+
 
 {% if object_list %}
-<!--
-	<select id="percent-select">
-	  <option>5</option>
-	  <option>6</option>
-	  <option>7</option>
-	  <option>8</option>
-	  <option>9</option>
-	  <option>10</option>
-	  <option>15</option>
-	  <option>20</option>
-	  <option>25</option>
-	  <option>30</option>
-	  <option>40</option>
-	  <option>50</option>
-	  <option>75</option>
-	  <option>100</option>
-	</select>
--->	
+
 	
 	<button class="btn btn-primary iphonebtn" type="submit" >submit page</button>    
 		

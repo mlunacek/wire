@@ -10,6 +10,7 @@ urlpatterns = patterns('',
    url(r'^summary/$', wire.summary_redirect, name='summary'),   
    url(r'^summary/(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})/(?P<trial>\d{1})/$', wire.summary_detail),
    url(r'^(?P<obj_type>\w+)/(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})/(?P<trial>\d{1})/$', wire.obj_view),
+   url(r'^(?P<obj_type>\w+)/(?P<year>\d{4})-(?P<month>\d{2})-(?P<day>\d{2})/(?P<trial>\d{1})/data/$', wire.obj_view_data),
    url(r'^(?P<obj_type>\w+)/$', wire.obj_view_redirect, name='obj_view_redirect'),
    
    
